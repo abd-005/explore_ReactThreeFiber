@@ -1,6 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber'
 import './App.css'
 import { useRef, useState } from 'react'
+import { MeshWobbleMaterial, OrbitControls } from '@react-three/drei';
 
 const Cube = ({ position, size, color }) => {
   const ref = useRef();
@@ -60,17 +61,20 @@ const Torus = ({ position, size, color }) => {
 const TorusKnot = ({ position, size, color }) => {
   const ref = useRef();
 
-  useFrame((state, delta) => {
-    ref.current.rotation.x += delta;
-    ref.current.rotation.y += delta * 2;
-    ref.current.position.z = Math.sin(state.clock.elapsedTime);
-    ref.current.position.y = Math.sin(state.clock.elapsedTime)
-  })
+  // useFrame((state, delta) => {
+  //   ref.current.rotation.x += delta;
+  //   ref.current.rotation.y += delta * 2;
+  //   ref.current.position.z = Math.sin(state.clock.elapsedTime);
+  //   ref.current.position.y = Math.sin(state.clock.elapsedTime)
+  // })
+
+
 
   return (
     <mesh position={position} ref={ref}>
       <torusKnotGeometry args={size} />
-      <meshStandardMaterial color={color} />
+      {/* <meshStandardMaterial color={color} /> */}
+      <MeshWobbleMaterial factor={5} speed={1} color={color} />
     </mesh>
   )
 }
@@ -100,10 +104,10 @@ const App = () => {
 
       {/* <Cube position={[0, 0, 0]} color={"darkcyan"} size={[1, 1, 1]} /> */}
 
-      <Sphere position={[0, 0, 0]} size={[1, 30, 30]} color={"pink"} />
+      {/* <Sphere position={[0, 0, 0]} size={[1, 30, 30]} color={"pink"} /> */}
       {/* <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} /> */}
-      {/* <TorusKnot position={[-2, 0, 0]} size={[0.5, 0.1, 1000, 50]} color={"hotpink"} /> */}
-
+      <TorusKnot position={[0, 0, 0]} size={[1, 0.1, 1000, 50]} color={"hotpink"} />
+        <OrbitControls enableZoom={false}  />
     </Canvas>
   )
 }
