@@ -32,7 +32,14 @@ const Sphere = ({ position, size, color }) => {
   )
 }
 
-
+const Torus = ({ position, size, color }) => {
+  return (
+    <mesh position={position}>
+      <torusGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
 
 const App = () => {
 
@@ -56,7 +63,7 @@ const App = () => {
       {/* <Cube position={[0, 0, 0]} color={"darkcyan"} size={[1, 1, 1]} /> */}
 
       <Sphere position={[0, 0, 0]} size={[1, 60, 60]} color={"pink"} />
-      
+      <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} />
 
     </Canvas>
   )
