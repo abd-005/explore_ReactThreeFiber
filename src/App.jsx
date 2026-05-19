@@ -1,7 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber'
 import './App.css'
 import { useRef } from 'react'
-import { sin } from 'three/tsl';
 
 const Cube = ({ position, size, color }) => {
 
@@ -11,8 +10,8 @@ const Cube = ({ position, size, color }) => {
     ref.current.rotation.x += delta
     ref.current.rotation.y += delta * 3
     ref.current.position.z = Math.sin(state.clock.elapsedTime) * 2
-    ref.current.position.y = Math.sin(state.clock.elapsedTime) 
-    ref.current.position.x = Math.cos(state.clock.elapsedTime) 
+    ref.current.position.y = Math.sin(state.clock.elapsedTime)
+    ref.current.position.x = Math.cos(state.clock.elapsedTime)
   })
 
   return (
@@ -23,6 +22,17 @@ const Cube = ({ position, size, color }) => {
   )
 
 }
+
+const Sphere = ({ position, size, color }) => {
+  return (
+    <mesh position={position}>
+      <sphereGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
+
+
 
 const App = () => {
 
@@ -43,7 +53,11 @@ const App = () => {
         <Cube position={[1, -1, 0]} color={"tomato"} size={[1, 1, 1]} />
       </group> */}
 
-      <Cube position={[0, 0, 0]} color={"darkcyan"} size={[1, 1, 1]} />
+      {/* <Cube position={[0, 0, 0]} color={"darkcyan"} size={[1, 1, 1]} /> */}
+
+      <Sphere position={[0, 0, 0]} size={[1, 60, 60]} color={"pink"} />
+      
+
     </Canvas>
   )
 }
