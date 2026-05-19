@@ -1,7 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber'
 import './App.css'
 import { useRef } from 'react'
-
 const Cube = ({ position, size, color }) => {
   const ref = useRef();
 
@@ -24,10 +23,16 @@ const Cube = ({ position, size, color }) => {
 }
 
 const Sphere = ({ position, size, color }) => {
+  const ref = useRef();
+
+useFrame( (state, delta) => {
+  ref.current.rotation.y += delta * .2;
+})
   return (
-    <mesh position={position}>
+
+    <mesh position={position} ref={ref}>
       <sphereGeometry args={size} />
-      <meshStandardMaterial color={color} />
+      <meshStandardMaterial color={color} wireframe />
     </mesh>
   )
 }
@@ -63,11 +68,15 @@ const App = () => {
 
   return (
     <Canvas>
+
       {/* Lighting */}
+
       <directionalLight position={[1, 1, 3]} intensity={0.5} />
       <ambientLight intensity={0.4} />
 
+
       {/* Materials */}
+
       {/* <group position={[0, 0, 1]}>
         <Cube position={[1, 1, 0]} color={"lightgreen"} size={[1, 1, 1]} />
 
@@ -80,9 +89,9 @@ const App = () => {
 
       {/* <Cube position={[0, 0, 0]} color={"darkcyan"} size={[1, 1, 1]} /> */}
 
-      <Sphere position={[0, 0, 0]} size={[1, 60, 60]} color={"pink"} />
-      <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} />
-      <TorusKnot position={[-2, 0, 0]} size={[0.5, 0.1, 1000, 50]} color={"hotpink"} />
+      <Sphere position={[0, 0, 0]} size={[1, 30, 30]} color={"pink"} />
+      {/* <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} /> */}
+      {/* <TorusKnot position={[-2, 0, 0]} size={[0.5, 0.1, 1000, 50]} color={"hotpink"} /> */}
 
     </Canvas>
   )
