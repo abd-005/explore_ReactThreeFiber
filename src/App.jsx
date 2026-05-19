@@ -3,7 +3,6 @@ import './App.css'
 import { useRef } from 'react'
 
 const Cube = ({ position, size, color }) => {
-
   const ref = useRef();
 
   useFrame((state, delta) => {
@@ -13,6 +12,7 @@ const Cube = ({ position, size, color }) => {
     ref.current.position.y = Math.sin(state.clock.elapsedTime)
     ref.current.position.x = Math.cos(state.clock.elapsedTime)
   })
+
 
   return (
     <mesh position={position} ref={ref}>
@@ -41,6 +41,24 @@ const Torus = ({ position, size, color }) => {
   )
 }
 
+const TorusKnot = ({ position, size, color }) => {
+  const ref = useRef();
+
+  useFrame( (state, delta) => {
+    ref.current.rotation.x += delta;
+    ref.current.rotation.y += delta * 2;
+    ref.current.position.z = Math.sin(state.clock.elapsedTime);
+    ref.current.position.y = Math.sin(state.clock.elapsedTime)
+  })
+
+  return (
+    <mesh position={position} ref={ref}>
+      <torusKnotGeometry args={size} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  )
+}
+
 const App = () => {
 
   return (
@@ -64,6 +82,7 @@ const App = () => {
 
       <Sphere position={[0, 0, 0]} size={[1, 60, 60]} color={"pink"} />
       <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} />
+      <TorusKnot position={[-2, 0, 0]} size={[0.5, 0.1, 1000, 50]} color={"hotpink"} />
 
     </Canvas>
   )
