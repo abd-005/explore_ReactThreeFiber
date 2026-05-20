@@ -1,7 +1,9 @@
 import { Canvas, useFrame } from '@react-three/fiber'
 import './App.css'
 import { useRef, useState } from 'react'
-import { MeshWobbleMaterial, OrbitControls } from '@react-three/drei';
+import { MeshWobbleMaterial, OrbitControls, useHelper } from '@react-three/drei';
+import { DirectionalLightHelper } from 'three';
+import { useControls } from 'leva';
 
 const Cube = ({ position, size, color }) => {
   const ref = useRef();
@@ -58,7 +60,17 @@ const Torus = ({ position, size, color }) => {
   )
 }
 
-const TorusKnot = ({ position, size, color }) => {
+const TorusKnot = ({ position, size }) => {
+
+  const {color, radius} = useControls({
+    color: "Lightblue",
+    radius: {
+      value: 1,
+      min: 0,
+      max: 10,
+    }
+  })
+
   const ref = useRef();
 
   // useFrame((state, delta) => {
@@ -72,21 +84,36 @@ const TorusKnot = ({ position, size, color }) => {
 
   return (
     <mesh position={position} ref={ref}>
-      <torusKnotGeometry args={size} />
+      <torusKnotGeometry args={[radius, ...size]} />
       {/* <meshStandardMaterial color={color} /> */}
       <MeshWobbleMaterial factor={5} speed={1} color={color} />
     </mesh>
   )
 }
 
-const App = () => {
+const Scene = () => {
+  const directionalLightRef = useRef();
+  useHelper(directionalLightRef, DirectionalLightHelper, 0.5, "yellow");
+  const {lightColor, lightIntensity} = useControls({
+    lightColor: "red",
+    lightIntensity: {
+      value: 2,
+      min:0,
+      max: 10,
+      step: 0.1,
+    }
+  });
 
   return (
-    <Canvas>
+    <>
+    {/* Lighting */}
 
-      {/* Lighting */}
-
-      <directionalLight position={[1, 1, 3]} intensity={0.5} />
+      <directionalLight 
+      position={[0, 1, 2]} 
+      intensity={0.5} 
+      ref={directionalLightRef}
+      color={lightColor}
+      />
       <ambientLight intensity={0.4} />
 
 
@@ -106,8 +133,18 @@ const App = () => {
 
       {/* <Sphere position={[0, 0, 0]} size={[1, 30, 30]} color={"pink"} /> */}
       {/* <Torus position={[2, 0, 0]} size={[0.8, 0.12, 30, 30]} color={"purple"} /> */}
-      <TorusKnot position={[0, 0, 0]} size={[1, 0.1, 1000, 50]} color={"hotpink"} />
+      <TorusKnot position={[0, 0, 0]} size={[ 0.1, 1000, 50]} color={"#64c1ff"} />
         <OrbitControls enableZoom={false}  />
+    </>
+  )
+}
+
+const App = () => {
+
+  return (
+    <Canvas>
+      <Scene />
+      
     </Canvas>
   )
 }
